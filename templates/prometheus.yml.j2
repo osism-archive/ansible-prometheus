@@ -1,0 +1,17 @@
+---
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - prometheus:9090
+
+  - job_name: telegraf
+    static_configs:
+      - targets:
+{% for item in groups[prometheus_telegraf_group_name] %}
+          - "{{ hostvars[item]['ansible_' + api_interface]['ipv4']['address'] }}:{{ prometheus_client_port }}"
+{% endfor %}

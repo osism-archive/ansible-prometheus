@@ -1,0 +1,39 @@
+---
+# NOTE: This is a variable of kolla-ansible and is only defined here to avoid
+#       issues.
+api_interface: eth0
+
+##########################
+# packages
+
+required_packages_prometheus:
+  - docker-compose
+  - python-docker
+
+##########################
+# docker
+
+docker_registry: index.docker.io
+
+##########################
+# operator user
+
+operator_user: dragon
+operator_group: "{{ operator_user }}"
+
+##########################
+# prometheus
+
+prometheus_configuration_directory: /opt/prometheus/configuration
+
+prometheus_host: "{{ ansible_default_ipv4.address }}"
+prometheus_port: 9090
+
+prometheus_tag: v1.8.1
+prometheus_image: "{{ docker_registry }}/prom/prometheus:{{ prometheus_tag }}"
+
+prometheus_client_port: 9273
+
+prometheus_telegraf_group_name: telegraf
+
+prometheus_configure_grafana_ds: true

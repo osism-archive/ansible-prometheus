@@ -1,0 +1,11 @@
+---
+- name: Playbook for preparations
+  hosts: all
+
+  roles: []
+
+- name: Playbook for role testing
+  hosts: all
+
+  roles:
+    - role: ansible-template

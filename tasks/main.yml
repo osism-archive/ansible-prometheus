@@ -1,0 +1,75 @@
+---
+- name: Install required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  become: true
+  with_items: "{{ required_packages_prometheus }}"
+
+- name: prometheus - create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ operator_user }}"
+    group: "{{ operator_group }}"
+    mode: 0755
+  become: true
+  with_items:
+    - "{{ prometheus_configuration_directory }}"
+
+- name: prometheus - copy configuration files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: 0644
+  with_items:
+    - src: prometheus.yml.j2
+      dest: "{{ prometheus_configuration_directory }}/prometheus.yml"
+
+- name: prometheus - run service
+  docker_service:
+    project_name: prometheus
+    definition:
+      version: '2'
+      services:
+        prometheus:
+          restart: unless-stopped
+          image: "{{ prometheus_image }}"
+          volumes:
+            - "prometheus:/prometheus"
+            - "{{ prometheus_configuration_directory }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+            - "/etc/hosts:/etc/hosts:ro"
+          ports:
+            - "{{ prometheus_host }}:{{ prometheus_port }}:9090"
+      volumes:
+        prometheus:
+
+- name: prometheus - check data source in grafana
+  uri:
+    url: "http://{{ grafana_host }}:{{ grafana_port }}/api/datasources/name/prometheus-{{ inventory_hostname_short }}"
+    user: "{{ grafana_admin_user }}"
+    password: "{{ grafana_admin_password }}"
+    force_basic_auth: yes
+  register: prometheus_ds
+  failed_when: false
+  changed_when: false
+  when: prometheus_configure_grafana_ds|bool
+
+- name: prometheus - create data source in grafana
+  uri:
+    url: "http://{{ grafana_host }}:{{ grafana_port }}/api/datasources"
+    method: POST
+    user: "{{ grafana_admin_user }}"
+    password: "{{ grafana_admin_password }}"
+    body:
+      name: "prometheus-{{ inventory_hostname_short }}"
+      type: "prometheus"
+      url: "http://{{ prometheus_host }}:{{ prometheus_port }}"
+      access: "proxy"
+      isDefault: true
+    force_basic_auth: yes
+    status_code: 200
+    body_format: json
+  when:
+    - prometheus_configure_grafana_ds|bool
+    - prometheus_ds.status == 404
