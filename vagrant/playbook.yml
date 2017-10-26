@@ -25,9 +25,9 @@
 
   vars:
     operator_user: ubuntu
-    prometheus_telegraf_group_name: all
     prometheus_configure_grafana_ds: false
-    api_interface: enp0s3
+    prometheus_telegraf_group_name: all
+    prometheus_telegraf_interface: enp0s3
 
   roles:
     - role: ../../ansible-prometheus

@@ -44,32 +44,6 @@
       volumes:
         prometheus:
 
-- name: prometheus - check data source in grafana
-  uri:
-    url: "http://{{ grafana_host }}:{{ grafana_port }}/api/datasources/name/prometheus-{{ inventory_hostname_short }}"
-    user: "{{ grafana_admin_user }}"
-    password: "{{ grafana_admin_password }}"
-    force_basic_auth: yes
-  register: prometheus_ds
-  failed_when: false
-  changed_when: false
+- name: prometheus - grafana integration
+  include: grafana.yml
   when: prometheus_configure_grafana_ds|bool
-
-- name: prometheus - create data source in grafana
-  uri:
-    url: "http://{{ grafana_host }}:{{ grafana_port }}/api/datasources"
-    method: POST
-    user: "{{ grafana_admin_user }}"
-    password: "{{ grafana_admin_password }}"
-    body:
-      name: "prometheus-{{ inventory_hostname_short }}"
-      type: "prometheus"
-      url: "http://{{ prometheus_host }}:{{ prometheus_port }}"
-      access: "proxy"
-      isDefault: true
-    force_basic_auth: yes
-    status_code: 200
-    body_format: json
-  when:
-    - prometheus_configure_grafana_ds|bool
-    - prometheus_ds.status == 404
