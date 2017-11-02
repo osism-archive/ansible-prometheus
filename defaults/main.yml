@@ -32,7 +32,7 @@ prometheus_telegraf_client_port: 9273
 prometheus_telegraf_group_name: telegraf
 prometheus_telegraf_interface: eth0
 
-prometheus_configure_grafana_ds: true
+prometheus_configure_grafana_ds: false
 prometheus_grafana_host: "{{ ansible_default_ipv4.address }}"
 prometheus_grafana_port: 3000
 prometheus_grafana_username: admin
