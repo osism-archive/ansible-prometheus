@@ -20,7 +20,6 @@
       type: "prometheus"
       url: "http://{{ prometheus_host }}:{{ prometheus_port }}"
       access: "proxy"
-      isDefault: true
     force_basic_auth: yes
     status_code: 200
     body_format: json
