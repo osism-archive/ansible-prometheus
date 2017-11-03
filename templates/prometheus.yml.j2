@@ -8,10 +8,3 @@ scrape_configs:
     static_configs:
       - targets:
           - {{ prometheus_host }}:{{ prometheus_port }}
-
-  - job_name: telegraf
-    static_configs:
-      - targets:
-{% for item in groups[prometheus_telegraf_group_name] %}
-          - "{{ hostvars[item]['ansible_' + prometheus_telegraf_interface]['ipv4']['address'] }}:{{ prometheus_telegraf_client_port }}"
-{% endfor %}

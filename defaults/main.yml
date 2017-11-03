@@ -28,10 +28,6 @@ prometheus_port: 9090
 prometheus_tag: v1.8.1
 prometheus_image: "{{ docker_registry }}/prom/prometheus:{{ prometheus_tag }}"
 
-prometheus_telegraf_client_port: 9273
-prometheus_telegraf_group_name: telegraf
-prometheus_telegraf_interface: eth0
-
 prometheus_configure_grafana_ds: false
 prometheus_grafana_host: "{{ ansible_default_ipv4.address }}"
 prometheus_grafana_port: 3000
