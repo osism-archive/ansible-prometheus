@@ -27,3 +27,48 @@ prometheus_port: 9090
 
 prometheus_tag: v1.8.1
 prometheus_image: "{{ docker_registry }}/prom/prometheus:{{ prometheus_tag }}"
+
+##########################
+# scraper
+
+prometheus_scraper_interface: eth0
+
+##########################
+# scraper - elasticsearch
+
+prometheus_scraper_elasticsearch: yes
+prometheus_scraper_elasticsearch_groupname: elasticsearch
+prometheus_scraper_elasticsearch_port: 9200
+prometheus_scraper_elasticsearch_interface: "{{ prometheus_scraper_interface }}"
+
+##########################
+# scraper - rabbitmq
+
+prometheus_scraper_rabbitmq: yes
+prometheus_scraper_rabbitmq_groupname: rabbitmq
+prometheus_scraper_rabbitmq_port: 15672
+prometheus_scraper_rabbitmq_interface: "{{ prometheus_scraper_interface }}"
+
+##########################
+# scraper - memcached
+
+prometheus_scraper_memcached: yes
+prometheus_scraper_memcached_groupname: memcached
+prometheus_scraper_memcached_port: 9150
+prometheus_scraper_memcached_interface: "{{ prometheus_scraper_interface }}"
+
+##########################
+# scraper - node
+
+prometheus_scraper_node: yes
+prometheus_scraper_node_groupname: all
+prometheus_scraper_node_port: 9100
+prometheus_scraper_node_interface: "{{ prometheus_scraper_interface }}"
+
+##########################
+# scraper - haproxy
+
+prometheus_scraper_haproxy: yes
+prometheus_scraper_haproxy_groupname: haproxy
+prometheus_scraper_haproxy_port: 9101
+prometheus_scraper_haproxy_interface: "{{ prometheus_scraper_interface }}"
