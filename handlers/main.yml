@@ -1,0 +1,5 @@
+---
+- name: Reload prometheus configuration
+  uri:
+    url: "{{ prometheus_protocol }}://{{ prometheus_host }}:{{ prometheus_port }}/-/reload"
+    method: POST
