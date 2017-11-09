@@ -43,7 +43,3 @@
             - "{{ prometheus_host }}:{{ prometheus_port }}:9090"
       volumes:
         prometheus:
-
-- name: prometheus - grafana integration
-  include: grafana.yml
-  when: prometheus_configure_grafana_ds|bool
