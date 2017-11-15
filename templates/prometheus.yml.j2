@@ -28,3 +28,12 @@ scrape_configs:
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_rabbitmq_interface']|default(prometheus_scraper_rabbitmq_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_rabbitmq_port }}
 {% endfor %}
 {% endif %}
+
+{% if prometheus_scraper_node | bool %}
+  - job_name: node
+    static_configs:
+      - targets:
+{% for host in groups[prometheus_scraper_node_groupname] %}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_node_interface']|default(prometheus_scraper_node_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_node_port }}
+{% endfor %}
+{% endif %}
