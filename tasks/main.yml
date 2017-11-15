@@ -27,6 +27,13 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus.yml"
   notify: Reload prometheus configuration
 
+- name: prometheus - pull images
+  docker_image:
+    name: "{{ item }}"
+    pull: yes
+  with_items:
+    - "{{ prometheus_image }}"
+
 - name: prometheus - run service
   docker_service:
     project_name: prometheus
