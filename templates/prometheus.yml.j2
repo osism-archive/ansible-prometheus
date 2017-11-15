@@ -55,3 +55,12 @@ scrape_configs:
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_mariadb_interface']|default(prometheus_scraper_mariadb_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_mariadb_port }}
 {% endfor %}
 {% endif %}
+
+{% if prometheus_scraper_haproxy | bool %}
+  - job_name: haproxy
+    static_configs:
+      - targets:
+{% for host in groups[prometheus_scraper_haproxy_groupname] %}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_haproxy_interface']|default(prometheus_scraper_haproxy_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_haproxy_port }}
+{% endfor %}
+{% endif %}
