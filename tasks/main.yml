@@ -1,5 +1,5 @@
 ---
-- name: Install required packages
+- name: prometheus - install required packages
   package:
     name: "{{ item }}"
     state: present
