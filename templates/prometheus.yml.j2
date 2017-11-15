@@ -4,63 +4,99 @@ global:
   evaluation_interval: 15s
 
 scrape_configs:
-  - job_name: prometheus
+
+# prometheus scraper
+
+  - job_name: prometheus-{{ inventory_hostname }}
     static_configs:
       - targets:
           - {{ prometheus_host }}:{{ prometheus_port }}
+        labels:
+          instance: {{ inventory_hostname }}
 
 {% if prometheus_scraper_elasticsearch | bool %}
-  - job_name: elasticsearch
+# elasticsearch scraper
+
+{% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
+
+  - job_name: elasticsearch-{{ host }}
     metrics_path: "/_prometheus/metrics"
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_elasticsearch_interface']|default(prometheus_scraper_elasticsearch_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_elasticsearch_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_rabbitmq | bool %}
-  - job_name: rabbitmq
+# rabbitmq scraper
+
+{% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
+
+  - job_name: rabbitmq-{{ host }}
     metrics_path: "/api/metrics"
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_rabbitmq_interface']|default(prometheus_scraper_rabbitmq_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_rabbitmq_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_node | bool %}
-  - job_name: node
+# node scraper
+
+{% for host in groups[prometheus_scraper_node_groupname] %}
+  - job_name: node-{{ host }}
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_node_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_node_interface']|default(prometheus_scraper_node_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_node_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_memcached | bool %}
-  - job_name: memcached
+{% for host in groups[prometheus_scraper_memcached_groupname] %}
+  - job_name: memcached-{{ host }}
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_memcached_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_memcached_interface']|default(prometheus_scraper_memcached_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_memcached_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_mariadb | bool %}
-  - job_name: mariadb
+# mariadb scraper
+
+{% for host in groups[prometheus_scraper_mariadb_groupname] %}
+  - job_name: mariadb-{{ host }}
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_mariadb_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_mariadb_interface']|default(prometheus_scraper_mariadb_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_mariadb_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_haproxy | bool %}
-  - job_name: haproxy
+# haproxy scraper
+
+{% for host in groups[prometheus_scraper_haproxy_groupname] %}
+
+  - job_name: haproxy-{{ host }}
     static_configs:
       - targets:
-{% for host in groups[prometheus_scraper_haproxy_groupname] %}
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_haproxy_interface']|default(prometheus_scraper_haproxy_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_haproxy_port }}
+        labels:
+          instance: {{ host }}
+
 {% endfor %}
 {% endif %}
