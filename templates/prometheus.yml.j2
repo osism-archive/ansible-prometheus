@@ -46,3 +46,12 @@ scrape_configs:
           - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_memcached_interface']|default(prometheus_scraper_memcached_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_memcached_port }}
 {% endfor %}
 {% endif %}
+
+{% if prometheus_scraper_mariadb | bool %}
+  - job_name: mariadb
+    static_configs:
+      - targets:
+{% for host in groups[prometheus_scraper_mariadb_groupname] %}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_mariadb_interface']|default(prometheus_scraper_mariadb_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_mariadb_port }}
+{% endfor %}
+{% endif %}

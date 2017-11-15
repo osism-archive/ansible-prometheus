@@ -73,3 +73,11 @@ prometheus_scraper_haproxy: yes
 prometheus_scraper_haproxy_groupname: haproxy
 prometheus_scraper_haproxy_port: 9101
 prometheus_scraper_haproxy_interface: "{{ prometheus_scraper_interface }}"
+
+##########################
+# scraper - mariadb
+
+prometheus_scraper_mariadb: yes
+prometheus_scraper_mariadb_groupname: mariadb
+prometheus_scraper_mariadb_port: 9104
+prometheus_scraper_mariadb_interface: "{{ prometheus_scraper_interface }}"
