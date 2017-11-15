@@ -15,6 +15,7 @@
     mode: 0755
   become: true
   with_items:
+    - "{{ prometheus_docker_compose_directory }}"
     - "{{ prometheus_configuration_directory }}"
 
 - name: prometheus - copy configuration files
@@ -27,27 +28,16 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus.yml"
   notify: Reload prometheus configuration
 
-- name: prometheus - pull images
-  docker_image:
-    name: "{{ item }}"
-    pull: yes
-  with_items:
-    - "{{ prometheus_image }}"
+- name: prometheus - copy docker-compose.yml file
+  template:
+    src: docker-compose.yml.j2
+    dest: "{{ prometheus_docker_compose_directory }}/docker-compose.yml"
+    owner: "{{ operator_user }}"
+    group: "{{ operator_group }}"
+    mode: 0640
 
 - name: prometheus - run service
   docker_service:
     project_name: prometheus
-    definition:
-      version: '2'
-      services:
-        prometheus:
-          restart: unless-stopped
-          image: "{{ prometheus_image }}"
-          volumes:
-            - "prometheus:/prometheus"
-            - "{{ prometheus_configuration_directory }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
-            - "/etc/hosts:/etc/hosts:ro"
-          ports:
-            - "{{ prometheus_host }}:{{ prometheus_port }}:9090"
-      volumes:
-        prometheus:
+    project_src: "{{ prometheus_docker_compose_directory }}"
+    pull: yes

@@ -21,6 +21,7 @@ operator_group: "{{ operator_user }}"
 # prometheus
 
 prometheus_configuration_directory: /opt/prometheus/configuration
+prometheus_docker_compose_directory: /opt/prometheus
 
 prometheus_host: "{{ ansible_default_ipv4.address }}"
 prometheus_port: 9090

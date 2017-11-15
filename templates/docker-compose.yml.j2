@@ -1,0 +1,14 @@
+---
+version: '2'
+services:
+  prometheus:
+    restart: unless-stopped
+    image: "{{ prometheus_image }}"
+    volumes:
+      - "prometheus:/prometheus"
+      - "{{ prometheus_configuration_directory }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "/etc/hosts:/etc/hosts:ro"
+    ports:
+      - "{{ prometheus_host }}:{{ prometheus_port }}:9090"
+volumes:
+  prometheus:
