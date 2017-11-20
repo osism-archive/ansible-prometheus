@@ -63,9 +63,10 @@ scrape_configs:
 {% if prometheus_scraper_memcached | bool %}
 {% for host in groups[prometheus_scraper_memcached_groupname] %}
   - job_name: memcached-{{ host }}
+    metrics_path: "/metrics/memcached"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_memcached_interface']|default(prometheus_scraper_memcached_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_memcached_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ host }}
 
@@ -77,9 +78,10 @@ scrape_configs:
 
 {% for host in groups[prometheus_scraper_mariadb_groupname] %}
   - job_name: mariadb-{{ host }}
+    metrics_path: "/metrics/mariadb"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_mariadb_interface']|default(prometheus_scraper_mariadb_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_mariadb_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ host }}
 
@@ -92,9 +94,26 @@ scrape_configs:
 {% for host in groups[prometheus_scraper_haproxy_groupname] %}
 
   - job_name: haproxy-{{ host }}
+    metrics_path: "/metrics/haproxy"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_haproxy_interface']|default(prometheus_scraper_haproxy_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_haproxy_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
+        labels:
+          instance: {{ host }}
+
+{% endfor %}
+{% endif %}
+
+{% if prometheus_scraper_cadvisor | bool %}
+# cadvisor scraper
+
+{% for host in groups[prometheus_scraper_cadvisor_groupname] %}
+
+  - job_name: cadvisor-{{ host }}
+    metrics_path: "/metrics/cadvisor"
+    static_configs:
+      - targets:
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ host }}
 
