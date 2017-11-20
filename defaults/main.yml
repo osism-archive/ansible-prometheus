@@ -30,6 +30,11 @@ prometheus_protocol: http
 prometheus_tag: v1.8.1
 prometheus_image: "{{ docker_registry }}/prom/prometheus:{{ prometheus_tag }}"
 
+prometheus_evaluation_interval: 1m
+prometheus_scrape_interval: 1m
+prometheus_scrape_timeout: 10s
+prometheus_storage_local_retention: 1440h
+
 ##########################
 # scraper
 

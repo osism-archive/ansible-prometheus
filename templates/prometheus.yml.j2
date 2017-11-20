@@ -1,7 +1,8 @@
 ---
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
+  scrape_interval: {{ prometheus_scrape_interval }}
+  scrape_timeout: {{ prometheus_scrape_timeout }}
+  evaluation_interval: {{ prometheus_evaluation_interval }}
 
 scrape_configs:
 
