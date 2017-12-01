@@ -8,25 +8,25 @@ scrape_configs:
 
 # prometheus scraper
 
-  - job_name: prometheus-{{ inventory_hostname }}
+  - job_name: prometheus-{{ inventory_hostname_short }}
     static_configs:
       - targets:
           - {{ prometheus_host }}:{{ prometheus_port }}
         labels:
-          instance: {{ inventory_hostname }}
+          instance: {{ inventory_hostname_short }}
 
 {% if prometheus_scraper_elasticsearch | bool %}
 # elasticsearch scraper
 
 {% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
 
-  - job_name: elasticsearch-{{ host }}
+  - job_name: elasticsearch-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/_prometheus/metrics"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_elasticsearch_interface']|default(prometheus_scraper_elasticsearch_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_elasticsearch_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_elasticsearch_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_elasticsearch_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
@@ -36,13 +36,13 @@ scrape_configs:
 
 {% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
 
-  - job_name: rabbitmq-{{ host }}
+  - job_name: rabbitmq-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/api/metrics"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_rabbitmq_interface']|default(prometheus_scraper_rabbitmq_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_rabbitmq_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_rabbitmq_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_rabbitmq_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
@@ -51,25 +51,25 @@ scrape_configs:
 # node scraper
 
 {% for host in groups[prometheus_scraper_node_groupname] %}
-  - job_name: node-{{ host }}
+  - job_name: node-{{ hostvars[host]['inventory_hostname_short'] }}
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_node_interface']|default(prometheus_scraper_node_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_node_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_node_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_node_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
 
 {% if prometheus_scraper_memcached | bool %}
 {% for host in groups[prometheus_scraper_memcached_groupname] %}
-  - job_name: memcached-{{ host }}
+  - job_name: memcached-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/metrics/memcached"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
@@ -78,13 +78,13 @@ scrape_configs:
 # mariadb scraper
 
 {% for host in groups[prometheus_scraper_mariadb_groupname] %}
-  - job_name: mariadb-{{ host }}
+  - job_name: mariadb-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/metrics/mariadb"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
@@ -94,13 +94,13 @@ scrape_configs:
 
 {% for host in groups[prometheus_scraper_haproxy_groupname] %}
 
-  - job_name: haproxy-{{ host }}
+  - job_name: haproxy-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/metrics/haproxy"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
@@ -110,13 +110,13 @@ scrape_configs:
 
 {% for host in groups[prometheus_scraper_cadvisor_groupname] %}
 
-  - job_name: cadvisor-{{ host }}
+  - job_name: cadvisor-{{ hostvars[host]['inventory_hostname_short'] }}
     metrics_path: "/metrics/cadvisor"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(prometheus_scraper_interface)]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
-          instance: {{ host }}
+          instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
