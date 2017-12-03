@@ -46,16 +46,12 @@ prometheus_scraper_proxy_port: 9100
 
 prometheus_scraper_elasticsearch: yes
 prometheus_scraper_elasticsearch_groupname: elasticsearch
-prometheus_scraper_elasticsearch_port: 9200
-prometheus_scraper_elasticsearch_interface: "{{ prometheus_scraper_interface }}"
 
 ##########################
 # scraper - rabbitmq
 
 prometheus_scraper_rabbitmq: yes
 prometheus_scraper_rabbitmq_groupname: rabbitmq
-prometheus_scraper_rabbitmq_port: 15672
-prometheus_scraper_rabbitmq_interface: "{{ prometheus_scraper_interface }}"
 
 ##########################
 # scraper - memcached
@@ -64,12 +60,10 @@ prometheus_scraper_memcached: yes
 prometheus_scraper_memcached_groupname: memcached
 
 ##########################
-# scraper - node
+# scraper - node-exporter
 
-prometheus_scraper_node: yes
-prometheus_scraper_node_groupname: all
-prometheus_scraper_node_port: 9102
-prometheus_scraper_node_interface: "{{ prometheus_scraper_interface }}"
+prometheus_scraper_node_exporter: yes
+prometheus_scraper_node_exporter_groupname: all
 
 ##########################
 # scraper - haproxy

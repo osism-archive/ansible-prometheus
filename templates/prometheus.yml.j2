@@ -21,10 +21,11 @@ scrape_configs:
 {% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
 
   - job_name: elasticsearch-{{ hostvars[host]['inventory_hostname_short'] }}
-    metrics_path: "/_prometheus/metrics"
+    #metrics_path: "/_prometheus/metrics"
+    metrics_path: "/metrics/elasticsearch"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_elasticsearch_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_elasticsearch_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
@@ -37,24 +38,26 @@ scrape_configs:
 {% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
 
   - job_name: rabbitmq-{{ hostvars[host]['inventory_hostname_short'] }}
-    metrics_path: "/api/metrics"
+    #metrics_path: "/api/metrics"
+    metrics_path: "/metrics/rabbitmq"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_rabbitmq_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_rabbitmq_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
 {% endfor %}
 {% endif %}
 
-{% if prometheus_scraper_node | bool %}
-# node scraper
+{% if prometheus_scraper_node_exporter | bool %}
+# node-exporter scraper
 
-{% for host in groups[prometheus_scraper_node_groupname] %}
-  - job_name: node-{{ hostvars[host]['inventory_hostname_short'] }}
+{% for host in groups[prometheus_scraper_node_exporter_groupname] %}
+  - job_name: node-exporter-{{ hostvars[host]['inventory_hostname_short'] }}
+    metrics_path: "/metrics/node-exporter"
     static_configs:
       - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_node_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_node_port }}
+          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']|default(hostvars[host]['prometheus_scraper_interface'])]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
         labels:
           instance: {{ hostvars[host]['inventory_hostname_short'] }}
 
