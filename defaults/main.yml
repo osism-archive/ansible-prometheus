@@ -82,3 +82,12 @@ prometheus_scraper_mariadb_groupname: mariadb
 
 prometheus_scraper_cadvisor: yes
 prometheus_scraper_cadvisor_groupname: all
+
+##########################
+# scraper - ceph
+
+prometheus_scraper_ceph: yes
+prometheus_scraper_ceph_groupname: ceph-mgr
+
+prometheus_scraper_ceph_target_host: "{{ ansible_default_ipv4.address }}"
+prometheus_scraper_ceph_target_port: 9283

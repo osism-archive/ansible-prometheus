@@ -123,3 +123,17 @@ scrape_configs:
 
 {% endfor %}
 {% endif %}
+
+{% if prometheus_scraper_ceph | bool %}
+# ceph scraper
+
+  - job_name: ceph
+    metrics_path: "/"
+    static_configs:
+      - targets:
+          - {{ prometheus_scraper_ceph_target_host }}:{{ prometheus_scraper_ceph_target_port }}
+        labels:
+          instance: ceph
+
+{% endif %}
+
