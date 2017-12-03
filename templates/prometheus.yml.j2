@@ -129,11 +129,10 @@ scrape_configs:
 
   - job_name: ceph
     metrics_path: "/"
+    honor_lables: true
     static_configs:
       - targets:
           - {{ prometheus_scraper_ceph_target_host }}:{{ prometheus_scraper_ceph_target_port }}
-        labels:
-          instance: ceph
 
 {% endif %}
 
