@@ -21,7 +21,6 @@ scrape_configs:
 {% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
 
   - job_name: elasticsearch-{{ hostvars[host]['inventory_hostname_short'] }}
-    #metrics_path: "/_prometheus/metrics"
     metrics_path: "/metrics/elasticsearch"
     static_configs:
       - targets:
@@ -38,7 +37,6 @@ scrape_configs:
 {% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
 
   - job_name: rabbitmq-{{ hostvars[host]['inventory_hostname_short'] }}
-    #metrics_path: "/api/metrics"
     metrics_path: "/metrics/rabbitmq"
     static_configs:
       - targets:
