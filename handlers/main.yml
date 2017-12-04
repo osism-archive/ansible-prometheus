@@ -3,3 +3,9 @@
   uri:
     url: "{{ prometheus_protocol }}://{{ prometheus_host }}:{{ prometheus_port }}/-/reload"
     method: POST
+
+- name: Restart service
+  docker_service:
+    project_name: prometheus
+    project_src: "{{ prometheus_docker_compose_directory }}"
+    restarted: true

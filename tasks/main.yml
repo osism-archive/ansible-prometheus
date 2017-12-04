@@ -28,6 +28,48 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus.yml"
   notify: Reload prometheus configuration
 
+- name: prometheus - nginx - create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ operator_user }}"
+    group: "{{ operator_group }}"
+    mode: 0750
+  become: true
+  with_items:
+    - "{{ prometheus_configuration_directory }}/nginx"
+
+- name: prometheus - nginx - install required packages
+  package:
+    name: "{{ item }}"
+    state: present
+  become: true
+  with_items:
+    - python-passlib
+  when: prometheus_authentication
+
+- name: prometheus - nginx - prepare auth file
+  htpasswd:
+    path: "{{ prometheus_configuration_directory }}/nginx/htpasswd.nginx"
+    name: "{{ prometheus_username }}"
+    password: "{{ prometheus_password }}"
+    owner: "{{ operator_user }}"
+    group: "{{ operator_group }}"
+    mode: 0640
+  when: prometheus_authentication
+
+- name: prometheus - nginx - copy configuration files
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ prometheus_configuration_directory }}/{{ item.dest }}"
+    owner: "{{ operator_user }}"
+    group: "{{ operator_group }}"
+    mode: 0640
+  notify: Restart service
+  with_items:
+    - src: nginx.conf.j2
+      dest: nginx/nginx.conf
+
 - name: prometheus - copy docker-compose.yml file
   template:
     src: docker-compose.yml.j2
