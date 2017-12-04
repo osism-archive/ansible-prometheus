@@ -1,6 +1,8 @@
 ---
+{% if prometheus_scraper_ceph | bool %}
 - targets:
   - {{ prometheus_scraper_ceph_target_host }}:{{ prometheus_scraper_ceph_target_port }}
   labels:
     instance: ceph
     job: ceph
+{% endif %}

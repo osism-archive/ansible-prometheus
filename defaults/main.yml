@@ -40,6 +40,11 @@ prometheus_scraper_interface: eth0
 prometheus_scraper_proxy_port: 9100
 
 ##########################
+# scraper - prometheus
+
+prometheus_scraper_prometheus: yes
+
+##########################
 # scraper - elasticsearch
 
 prometheus_scraper_elasticsearch: yes
