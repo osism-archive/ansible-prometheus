@@ -13,58 +13,61 @@ alerting:
       - {{ hostvars[host]['prometheus_alertmanager_host'] }}:{{ prometheus_alertmanager_port }}
 {% endfor %}
 
+rule_files:
+  - /etc/prometheus/rules/*.yml
+
 scrape_configs:
 
   - job_name: prometheus
     file_sd_configs:
       - files:
-        - targets-prometheus.yml
+        - targets/prometheus.yml
 
   - job_name: elasticsearch
     metrics_path: "/metrics/elasticsearch"
     file_sd_configs:
       - files:
-        - targets-elasticsearch.yml
+        - targets/elasticsearch.yml
 
   - job_name: rabbitmq
     metrics_path: "/metrics/rabbitmq"
     file_sd_configs:
       - files:
-        - targets-rabbitmq.yml
+        - targets/rabbitmq.yml
 
   - job_name: node-exporter
     metrics_path: "/metrics/node-exporter"
     file_sd_configs:
       - files:
-        - targets-node-exporter.yml
+        - targets/node-exporter.yml
 
   - job_name: memcached
     metrics_path: "/metrics/memcached"
     file_sd_configs:
       - files:
-        - targets-memcached.yml
+        - targets/memcached.yml
 
   - job_name: mariadb
     metrics_path: "/metrics/mariadb"
     file_sd_configs:
       - files:
-        - targets-mariadb.yml
+        - targets/mariadb.yml
 
   - job_name: haproxy
     metrics_path: "/metrics/haproxy"
     file_sd_configs:
       - files:
-        - targets-haproxy.yml
+        - targets/haproxy.yml
 
   - job_name: cadvisor
     metrics_path: "/metrics/cadvisor"
     file_sd_configs:
       - files:
-        - targets-cadvisor.yml
+        - targets/cadvisor.yml
 
   - job_name: ceph 
     metrics_path: "/"
     honor_labels: true
     file_sd_configs:
       - files:
-        - targets-ceph.yml
+        - targets/ceph.yml
