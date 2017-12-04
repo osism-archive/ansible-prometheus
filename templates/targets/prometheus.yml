@@ -1,8 +1,10 @@
 ---
 {% if prometheus_scraper_prometheus | bool %}
+{% for host in groups[prometheus_scraper_prometheus_groupname] %}
 - targets:
-  - {{ prometheus_host }}:{{ prometheus_port }}
+  - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
   labels:
-    instance: {{ inventory_hostname_short }}
+    instance: {{ hostvars[host]['inventory_hostname_short'] }}
     job: prometheus
+{% endfor %}
 {% endif %}

@@ -19,6 +19,7 @@ rule_files:
 scrape_configs:
 
   - job_name: prometheus
+    metrics_path: "/metrics/prometheus"
     file_sd_configs:
       - files:
         - targets/prometheus.yml

@@ -43,6 +43,7 @@ prometheus_scraper_proxy_port: 9100
 # scraper - prometheus
 
 prometheus_scraper_prometheus: yes
+prometheus_scraper_prometheus_groupname: prometheus
 
 ##########################
 # scraper - elasticsearch
