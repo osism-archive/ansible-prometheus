@@ -19,7 +19,7 @@ services:
     entrypoint: "/bin/prometheus --config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.console.libraries=/usr/share/prometheus/console_libraries --web.console.templates=/usr/share/prometheus/consoles --storage.tsdb.retention={{ prometheus_storage_local_retention }} --web.external-url={{ prometheus_protocol }}://{{ prometheus_host }}:{{ prometheus_port }} --web.enable-lifecycle"
     volumes:
       - "prometheus:/prometheus"
-      - "{{ prometheus_configuration_directory }}/prometheus.yml:/etc/prometheus/prometheus.yml:ro"
+      - "{{ prometheus_configuration_directory }}/prometheus:/etc/prometheus:ro"
       - "/etc/hosts:/etc/hosts:ro"
 
   nginx:

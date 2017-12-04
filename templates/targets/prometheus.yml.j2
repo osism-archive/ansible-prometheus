@@ -1,0 +1,6 @@
+---
+- targets:
+  - {{ prometheus_host }}:{{ prometheus_port }}
+  labels:
+    instance: {{ inventory_hostname_short }}
+    job: prometheus

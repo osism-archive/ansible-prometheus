@@ -15,133 +15,56 @@ alerting:
 
 scrape_configs:
 
-# prometheus scraper
+  - job_name: prometheus
+    file_sd_configs:
+      - files:
+        - targets-prometheus.yml
 
-  - job_name: prometheus-{{ inventory_hostname_short }}
-    static_configs:
-      - targets:
-          - {{ prometheus_host }}:{{ prometheus_port }}
-        labels:
-          instance: {{ inventory_hostname_short }}
-
-{% if prometheus_scraper_elasticsearch | bool %}
-# elasticsearch scraper
-
-{% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
-
-  - job_name: elasticsearch-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: elasticsearch
     metrics_path: "/metrics/elasticsearch"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-elasticsearch.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_rabbitmq | bool %}
-# rabbitmq scraper
-
-{% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
-
-  - job_name: rabbitmq-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: rabbitmq
     metrics_path: "/metrics/rabbitmq"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-rabbitmq.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_node_exporter | bool %}
-# node-exporter scraper
-
-{% for host in groups[prometheus_scraper_node_exporter_groupname] %}
-  - job_name: node-exporter-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: node-exporter
     metrics_path: "/metrics/node-exporter"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-node-exporter.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_memcached | bool %}
-{% for host in groups[prometheus_scraper_memcached_groupname] %}
-  - job_name: memcached-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: memcached
     metrics_path: "/metrics/memcached"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-memcached.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_mariadb | bool %}
-# mariadb scraper
-
-{% for host in groups[prometheus_scraper_mariadb_groupname] %}
-  - job_name: mariadb-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: mariadb
     metrics_path: "/metrics/mariadb"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-mariadb.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_haproxy | bool %}
-# haproxy scraper
-
-{% for host in groups[prometheus_scraper_haproxy_groupname] %}
-
-  - job_name: haproxy-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: haproxy
     metrics_path: "/metrics/haproxy"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-haproxy.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_cadvisor | bool %}
-# cadvisor scraper
-
-{% for host in groups[prometheus_scraper_cadvisor_groupname] %}
-
-  - job_name: cadvisor-{{ hostvars[host]['inventory_hostname_short'] }}
+  - job_name: cadvisor
     metrics_path: "/metrics/cadvisor"
-    static_configs:
-      - targets:
-          - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
-        labels:
-          instance: {{ hostvars[host]['inventory_hostname_short'] }}
+    file_sd_configs:
+      - files:
+        - targets-cadvisor.yml
 
-{% endfor %}
-{% endif %}
-
-{% if prometheus_scraper_ceph | bool %}
-# ceph scraper
-
-  - job_name: ceph
+  - job_name: ceph 
     metrics_path: "/"
     honor_labels: true
-    static_configs:
-      - targets:
-          - {{ prometheus_scraper_ceph_target_host }}:{{ prometheus_scraper_ceph_target_port }}
-        labels:
-          instance: ceph
-
-{% endif %}
-
+    file_sd_configs:
+      - files:
+        - targets-ceph.yml
