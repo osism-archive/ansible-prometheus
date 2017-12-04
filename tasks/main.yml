@@ -33,41 +33,21 @@
 
 - name: prometheus - copy target configuration files
   template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename }}"
     mode: 0644
-  with_items:
-    - src: targets/prometheus.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/prometheus.yml"
-    - src: targets/elasticsearch.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/elasticsearch.yml"
-    - src: targets/rabbitmq.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/rabbitmq.yml"
-    - src: targets/node-exporter.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/node-exporter.yml"
-    - src: targets/memcached.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/memcached.yml"
-    - src: targets/mariadb.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/mariadb.yml"
-    - src: targets/haproxy.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/haproxy.yml"
-    - src: targets/cadvisor.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/cadvisor.yml"
-    - src: targets/ceph.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/prometheus/targets/ceph.yml"
+  with_fileglob:
+    - "templates/targets/*.yml"
+    - "{{ prometheus_custom_targets_directory }}/*.yml"
 
 - name: prometheus - copy rule configuration files
   copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
     mode: 0644
-  with_items:
-    - src: rules/node-exporter.yml
-      dest: "{{ prometheus_configuration_directory }}/prometheus/rules/node-exporter.yml"
-    - src: rules/prometheus.yml
-      dest: "{{ prometheus_configuration_directory }}/prometheus/rules/prometheus.yml"
-    - src: rules/galera.yml
-      dest: "{{ prometheus_configuration_directory }}/prometheus/rules/galera.yml"
+  with_fileglob:
+    - rules/*.yml
+    - "{{ prometheus_custom_rules_directory }}/*.yml"
 
 - name: prometheus - alertmanager - copy configuration files
   template:
