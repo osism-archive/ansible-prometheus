@@ -92,7 +92,7 @@ prometheus_scraper_cadvisor_groupname: all
 prometheus_scraper_ceph: yes
 prometheus_scraper_ceph_groupname: ceph-mgr
 
-prometheus_scraper_ceph_target_host: "{{ ansible_default_ipv4.address }}"
+prometheus_scraper_ceph_target_host: 127.0.0.1
 prometheus_scraper_ceph_target_port: 9283
 
 ##########################
@@ -105,7 +105,7 @@ prometheus_password: password
 prometheus_nginx_tag: latest
 prometheus_nginx_image: "{{ docker_registry }}/library/nginx:{{ prometheus_nginx_tag }}"
 
-prometheus_host: "{{ ansible_default_ipv4.address }}"
+prometheus_host: 127.0.0.1
 prometheus_port: 9090
 prometheus_protocol: http
 
@@ -115,7 +115,7 @@ prometheus_protocol: http
 prometheus_alertmanager_tag: latest
 prometheus_alertmanager_image: "{{ docker_registry }}/prom/alertmanager:{{ prometheus_alertmanager_tag }}"
 
-prometheus_alertmanager_host: "{{ ansible_default_ipv4.address }}"
+prometheus_alertmanager_host: 127.0.0.1
 prometheus_alertmanager_port: 9093
 prometheus_alertmanager_protocol: http
 
