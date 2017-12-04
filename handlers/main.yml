@@ -1,4 +1,9 @@
 ---
+- name: Reload alertmanager configuration
+  uri:
+    url: "{{ prometheus_alertmanager_protocol }}://{{ prometheus_alertmanager_host }}:{{ prometheus_alertmanager_port }}/-/reload"
+    method: POST
+
 - name: Reload prometheus configuration
   uri:
     url: "{{ prometheus_protocol }}://{{ prometheus_host }}:{{ prometheus_port }}/-/reload"

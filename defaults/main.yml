@@ -31,6 +31,8 @@ prometheus_scrape_interval: 1m
 prometheus_scrape_timeout: 10s
 prometheus_storage_local_retention: 1440h
 
+prometheus_groupname: prometheus
+
 ##########################
 # scraper
 
@@ -101,3 +103,15 @@ prometheus_nginx_image: "{{ docker_registry }}/library/nginx:{{ prometheus_nginx
 prometheus_host: "{{ ansible_default_ipv4.address }}"
 prometheus_port: 9090
 prometheus_protocol: http
+
+##########################
+# alertmanager
+
+prometheus_alertmanager_tag: latest
+prometheus_alertmanager_image: "{{ docker_registry }}/prom/alertmanager:{{ prometheus_alertmanager_tag }}"
+
+prometheus_alertmanager_host: "{{ ansible_default_ipv4.address }}"
+prometheus_alertmanager_port: 9093
+prometheus_alertmanager_protocol: http
+
+prometheus_alertmanager_password: password

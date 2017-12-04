@@ -1,8 +1,17 @@
 server {
-    listen       80;
+    listen       8080;
     server_name  prometheus;
 
     location / {
         proxy_pass   http://prometheus:9090;
+    }
+}
+
+server {
+    listen       8081;
+    server_name  alertmanager;
+
+    location / {
+        proxy_pass   http://alertmanager:9093;
     }
 }
