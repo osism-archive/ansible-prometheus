@@ -48,6 +48,7 @@
   with_fileglob:
     - rules/*.yml
     - "{{ prometheus_custom_rules_directory }}/*.yml"
+  notify: Reload prometheus configuration
 
 - name: prometheus - alertmanager - copy configuration files
   template:
