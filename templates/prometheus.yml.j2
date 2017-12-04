@@ -131,6 +131,8 @@ scrape_configs:
     static_configs:
       - targets:
           - {{ prometheus_scraper_ceph_target_host }}:{{ prometheus_scraper_ceph_target_port }}
+        labels:
+          instance: ceph
 
 {% endif %}
 
