@@ -43,17 +43,6 @@ groups:
       description: '{{$labels.job}} at {{$labels.instance}} has a 90th percentile
         latency of {{$value}}s completing rule evaluation cycles.'
       title: '{{$labels.job}} is evaluating rules too slowly'
-  - alert: PrometheusCheckpointingSlow
-    expr: avg_over_time(prometheus_local_storage_checkpoint_last_duration_seconds{job=~"prometheus.*"}[15m])
-      > prometheus_local_storage_max_chunks_to_persist{job=~"prometheus.*"} / 5000
-    for: 5m
-    labels:
-      service: prometheus
-      severity: warn
-    annotations:
-      description: '{{$labels.job}} at {{$labels.instance}} needs {{$value}}s on average
-        for each checkpoint.'
-      title: '{{$labels.job}} is checkpointing too slowly'
   - alert: PrometheusNotificationsBacklog
     expr: prometheus_notifications_queue_length{job=~"prometheus.*"} > 0
     for: 10m

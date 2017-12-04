@@ -65,6 +65,15 @@ scrape_configs:
     file_sd_configs:
       - files:
         - targets/cadvisor.yml
+    metric_relabel_configs:
+      - source_labels: [image]
+        regex: '.*/(.*):.*$'
+        replacement: '$1'
+        target_label: image_name
+      - source_labels: [image]
+        regex: '.*:(.*)$'
+        replacement: '$1'
+        target_label: image_tag
 
   - job_name: ceph 
     metrics_path: "/"
