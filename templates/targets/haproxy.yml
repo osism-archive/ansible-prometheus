@@ -4,6 +4,7 @@
 - targets:
   - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
   labels:
+    alias: {{ hostvars[host]['inventory_hostname_short'] }}
     instance: {{ hostvars[host]['inventory_hostname_short'] }}
     job: haproxy
 {% endfor %}
