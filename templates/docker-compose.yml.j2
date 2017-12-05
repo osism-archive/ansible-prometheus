@@ -5,7 +5,7 @@ services:
   alertmanager:
     restart: unless-stopped
     image: "{{ prometheus_alertmanager_image }}"
-    entrypoint: "/bin/alertmanager -config.file=/etc/alertmanager/config.yml -storage.path=/alertmanager -web.external-url={{ prometheus_alertmanager_protocol }}://{{ prometheus_alertmanager_host }}:{{ prometheus_alertmanager_port }} -mesh.nickname={{ inventory_hostname_short }} -mesh.password={{ prometheus_alertmanager_password }}"
+    entrypoint: "/bin/alertmanager -config.file=/etc/alertmanager/config.yml -storage.path=/alertmanager -web.external-url={{ prometheus_alertmanager_protocol }}://{{ prometheus_alertmanager_host }}:{{ prometheus_alertmanager_port }} -mesh.nickname={{ inventory_hostname_short }} -mesh.password={{ prometheus_alertmanager_password }} -mesh.listen-address=0.0.0.0:6783"
     volumes:
       - "alertmanager:/alertmanager"
       - "{{ prometheus_configuration_directory }}/alertmanager.yml:/etc/alertmanager/config.yml:ro"
