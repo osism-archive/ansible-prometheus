@@ -76,7 +76,7 @@ scrape_configs:
         target_label: image_tag
 
   - job_name: ceph 
-    metrics_path: {{ prometheus_scraper_ceph_metrics_path }}"
+    metrics_path: {{ prometheus_scraper_ceph_metrics_path }}
     honor_labels: true
     file_sd_configs:
       - files:
