@@ -96,6 +96,8 @@ prometheus_scraper_ceph_groupname: ceph-mgr
 prometheus_scraper_ceph_target_host: 127.0.0.1
 prometheus_scraper_ceph_target_port: 9283
 
+prometheus_scraper_ceph_metrics_path: "/"
+
 ##########################
 # nginx
 
