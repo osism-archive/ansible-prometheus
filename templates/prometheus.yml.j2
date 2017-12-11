@@ -36,11 +36,11 @@ scrape_configs:
       - files:
         - targets/rabbitmq.yml
 
-  - job_name: node-exporter
-    metrics_path: "/metrics/node-exporter"
+  - job_name: node
+    metrics_path: "/metrics/node"
     file_sd_configs:
       - files:
-        - targets/node-exporter.yml
+        - targets/node.yml
 
   - job_name: memcached
     metrics_path: "/metrics/memcached"

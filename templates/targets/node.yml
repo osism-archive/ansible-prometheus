@@ -1,10 +1,10 @@
 ---
-{% if prometheus_scraper_node_exporter | bool %}
-{% for host in groups[prometheus_scraper_node_exporter_groupname] %}
+{% if prometheus_scraper_node | bool %}
+{% for host in groups[prometheus_scraper_node_groupname] %}
 - targets:
   - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
   labels:
     instance: {{ hostvars[host]['inventory_hostname_short'] }}
-    job: node-exporter
+    job: node
 {% endfor %}
 {% endif %}

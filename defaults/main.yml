@@ -64,10 +64,10 @@ prometheus_scraper_memcached: yes
 prometheus_scraper_memcached_groupname: memcached
 
 ##########################
-# scraper - node-exporter
+# scraper - node
 
-prometheus_scraper_node_exporter: yes
-prometheus_scraper_node_exporter_groupname: all
+prometheus_scraper_node: yes
+prometheus_scraper_node: all
 
 ##########################
 # scraper - haproxy
