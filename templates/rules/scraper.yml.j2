@@ -3,14 +3,14 @@ groups:
   rules:
 {%- for item in prometheus_rules_scraper.elements %}
 
-  - alert: {{ item|title }}ExporterUnreachable
+  - alert: Exporter{{ item|title }}Unreachable
     expr: up{job=~"{{ item }}.*"} == 0
     for: {{ prometheus_rules_scraper.timeframe }}
     labels:
       service: {{ item }}-exporter
       severity: critical
     annotations:
-      description: {{ '{{' }} $labels.job {{ '}}' }} at {{ '{{' }} $labels.instance {{ '}}' }} could not be scraped for over 10 minutes.
+      description: {{ '{{' }} $labels.job {{ '}}' }} at {{ '{{' }} $labels.instance {{ '}}' }} could not be scraped for over {{ prometheus_rules_scraper.timeframe }}
       title: {{ '{{' }} $labels.job {{ '}}' }} is unreachable
 
 {%- endfor %}
