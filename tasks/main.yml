@@ -31,16 +31,16 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus/prometheus.yml"
   notify: Reload prometheus configuration
 
-- name: prometheus - copy target configuration files
+- name: prometheus - copy dynamic target configuration files
   template:
     src: "{{ item }}"
-    dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename|replace('.j2', '') }}"
     mode: 0644
   with_fileglob:
-    - "templates/targets/*.yml"
-    - "{{ prometheus_custom_targets_directory }}/*.yml"
+    - "templates/targets/*.yml.j2"
+    - "{{ prometheus_custom_targets_directory }}/*.yml.j2"
 
-- name: prometheus - copy rule configuration files
+- name: prometheus - copy static rule configuration files
   copy:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
@@ -48,6 +48,16 @@
   with_fileglob:
     - rules/*.yml
     - "{{ prometheus_custom_rules_directory }}/*.yml"
+  notify: Reload prometheus configuration
+
+- name: prometheus - copy dynamic rule configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename|replace('.j2', '') }}"
+    mode: 0644
+  with_fileglob:
+    - templates/rules/*.yml.j2
+    - "{{ prometheus_custom_rules_directory }}/*.yml.j2"
   notify: Reload prometheus configuration
 
 - name: prometheus - alertmanager - copy configuration files

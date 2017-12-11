@@ -133,3 +133,16 @@ prometheus_custom_targets_directory: /opt/configuration/environments/monitoring/
 # rules
 
 prometheus_custom_rules_directory: /opt/configuration/environments/monitoring/files/rules
+
+prometheus_rules_scraper:
+  timeframe: 10m
+  elements:
+    - cadvisor
+    - ceph
+    - elasticsearch
+    - haproxy
+    - mariadb
+    - memcached
+    - node
+    - prometheus
+    - rabbitmq
