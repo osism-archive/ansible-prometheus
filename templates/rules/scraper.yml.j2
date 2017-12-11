@@ -10,7 +10,7 @@ groups:
       service: {{ item }}-exporter
       severity: critical
     annotations:
-      description: "{{ '{{' }} $labels.job {{ '}}' }} at {{ '{{' }} $labels.instance {{ '}}' }} could not be scraped for over {{ prometheus_rules_scraper.timeframe }}"
-      title: "{{ '{{' }} $labels.job {{ '}}' }} is unreachable"
+      description: "Exporter {{ item|title }} at {{ '{{' }} $labels.instance {{ '}}' }} could not be scraped for over {{ prometheus_rules_scraper.timeframe }}"
+      title: "Exporter {{ item|title }} is unreachable at {{ '{{' }} $labels.instance {{ '}}' }} "
 
 {%- endfor %}

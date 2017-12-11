@@ -146,3 +146,21 @@ prometheus_rules_scraper:
     - node
     - prometheus
     - rabbitmq
+
+prometheus_rules_node_systemd:
+    timeframe: 5m
+    elements:
+      - name: auditd
+        type: service
+      - name: docker
+        type: service
+      - name: docker
+        type: socket
+      - name: cron
+        type: service
+      - name: rsyslog
+        type: service
+      - name: chrony
+        type: service
+      - name: node_exporter
+        type: service
