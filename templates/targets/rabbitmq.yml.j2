@@ -1,10 +1,12 @@
 ---
 {% if prometheus_scraper_rabbitmq | bool %}
 {% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
+{% if hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
 - targets:
   - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
   labels:
     instance: {{ hostvars[host]['inventory_hostname_short'] }}
     job: rabbitmq
+{% endif %}
 {% endfor %}
 {% endif %}
