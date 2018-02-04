@@ -1,12 +1,17 @@
 ---
 sudo: required
+
 language: python
-services:
-  - docker
+
+before_install:
+  - openssl aes-256-cbc -K $encrypted_9cde441547f0_key -iv $encrypted_9cde441547f0_iv -in molecule/default/clouds.yml.enc -out molecule/default/clouds.yml -d
+
 install:
   - pip install -r test-requirements.txt
+
 script:
   - tox
+
 notifications:
   irc:
     channels:

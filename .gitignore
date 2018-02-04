@@ -2,3 +2,4 @@
 .tox
 .vagrant
 roles
+clouds.yml
