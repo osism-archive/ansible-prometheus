@@ -3,7 +3,6 @@
 # packages
 
 required_packages_prometheus:
-  - docker-compose
   - python-docker
 
 ##########################
