@@ -5,6 +5,7 @@
 
   vars:
     operator_user: ubuntu
+    prometheus_groupname: all
 
   roles:
     - role: ansible-prometheus
