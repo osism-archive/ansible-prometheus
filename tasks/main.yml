@@ -121,7 +121,6 @@
     mode: 0640
 
 - name: prometheus - run service
-  docker_service:
-    project_name: prometheus
-    project_src: "{{ prometheus_docker_compose_directory }}"
-    pull: yes
+  command: "docker-compose -f {{ prometheus_docker_compose_directory }}/docker-compose.yml -p prometheus create --no-build"
+  register: result
+  changed_when: ('Creating' in result.stdout or 'Recreating' in result.stdout)
