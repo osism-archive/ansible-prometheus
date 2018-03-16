@@ -1,5 +1,5 @@
 ---
-{% if prometheus_scraper_rabbitmq | bool %}
+{% if prometheus_scraper_rabbitmq | bool and groups[prometheus_scraper_rabbitmq_groupname] is defined %}
 {% for host in groups[prometheus_scraper_rabbitmq_groupname] %}
 {% if hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
 - targets:

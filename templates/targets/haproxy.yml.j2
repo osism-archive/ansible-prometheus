@@ -1,5 +1,5 @@
 ---
-{% if prometheus_scraper_haproxy | bool %}
+{% if prometheus_scraper_haproxy | bool and groups[prometheus_scraper_haproxy_groupname] is defined %}
 {% for host in groups[prometheus_scraper_haproxy_groupname] %}
 {% if hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
 - targets:

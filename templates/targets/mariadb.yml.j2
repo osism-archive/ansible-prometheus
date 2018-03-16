@@ -1,5 +1,5 @@
 ---
-{% if prometheus_scraper_mariadb | bool %}
+{% if prometheus_scraper_mariadb | bool and groups[prometheus_scraper_mariadb_groupname] is defined %}
 {% for host in groups[prometheus_scraper_mariadb_groupname] %}
 {% if hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
 - targets:
