@@ -31,14 +31,27 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus/prometheus.yml"
   notify: Reload prometheus configuration
 
-- name: prometheus - copy dynamic target configuration files
+- name: prometheus - copy integrated dynamic target configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename|replace('.j2', '') }}"
     mode: 0644
   with_fileglob:
     - "templates/targets/*.yml.j2"
+
+- name: Check if {{ prometheus_custom_targets_directory }} exist
+  stat:
+    path: "{{ prometheus_custom_targets_directory }}"
+  register: result
+
+- name: prometheus - copy additional dynamic target configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename|replace('.j2', '') }}"
+    mode: 0644
+  with_fileglob:
     - "{{ prometheus_custom_targets_directory }}/*.yml.j2"
+  when: result.stat.islnk is defined
 
 - name: prometheus - copy static rule configuration files
   copy:
