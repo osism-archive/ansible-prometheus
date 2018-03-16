@@ -39,7 +39,7 @@
   with_fileglob:
     - "templates/targets/*.yml.j2"
 
-- name: Check if {{ prometheus_custom_targets_directory }} exist
+- name: prometheus - get status of {{ prometheus_custom_targets_directory }}
   stat:
     path: "{{ prometheus_custom_targets_directory }}"
   register: result
@@ -51,27 +51,50 @@
     mode: 0644
   with_fileglob:
     - "{{ prometheus_custom_targets_directory }}/*.yml.j2"
-  when: result.stat.islnk is defined
+  when: result.stat.exists == True
 
-- name: prometheus - copy static rule configuration files
+- name: prometheus - copy integrated static rule configuration files
   copy:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
     mode: 0644
   with_fileglob:
     - rules/*.yml
-    - "{{ prometheus_custom_rules_directory }}/*.yml"
   notify: Reload prometheus configuration
 
-- name: prometheus - copy dynamic rule configuration files
+- name: prometheus - get status of {{ prometheus_custom_rules_directory }}
+  stat:
+    path: "{{ prometheus_custom_rules_directory }}"
+  register: result
+
+- name: prometheus - copy additional static rule configuration files
+  copy:
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
+    mode: 0644
+  with_fileglob:
+    - "{{ prometheus_custom_rules_directory }}/*.yml"
+  notify: Reload prometheus configuration
+  when: result.stat.exists == True
+
+- name: prometheus - copy integrated dynamic rule configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename|replace('.j2', '') }}"
     mode: 0644
   with_fileglob:
     - templates/rules/*.yml.j2
+  notify: Reload prometheus configuration
+
+- name: prometheus - copy additional dynamic rule configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename|replace('.j2', '') }}"
+    mode: 0644
+  with_fileglob:
     - "{{ prometheus_custom_rules_directory }}/*.yml.j2"
   notify: Reload prometheus configuration
+  when: result.stat.exists == True
 
 - name: prometheus - alertmanager - copy configuration files
   template:
