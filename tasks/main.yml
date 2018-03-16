@@ -120,6 +120,11 @@
     group: "{{ operator_group }}"
     mode: 0640
 
+- name: manager - pull images
+  command: "docker-compose -f {{ prometheus_docker_compose_directory }}/docker-compose.yml pull"
+  register: result
+  changed_when: ('Downloaded' in result.stdout)
+
 - name: prometheus - run service
   command: "docker-compose -f {{ prometheus_docker_compose_directory }}/docker-compose.yml -p prometheus up -d --no-build"
   register: result
