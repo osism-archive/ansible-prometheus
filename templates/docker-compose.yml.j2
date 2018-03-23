@@ -8,7 +8,7 @@ services:
     entrypoint: "/bin/alertmanager -config.file=/etc/alertmanager/config.yml -storage.path=/alertmanager -web.external-url={{ prometheus_alertmanager_protocol }}://{{ prometheus_alertmanager_host }}:{{ prometheus_alertmanager_port }} -mesh.nickname={{ inventory_hostname_short }} -mesh.password={{ prometheus_alertmanager_password }} -mesh.listen-address=0.0.0.0:6783{% for host in groups[prometheus_groupname] %}{% if hostvars[host]['prometheus_alertmanager_host'] is defined and hostvars[host]['prometheus_alertmanager_host'] != prometheus_alertmanager_host %} -mesh.peer={{ hostvars[host]['prometheus_alertmanager_host'] }}:6783{% endif %}{% endfor %}"
     volumes:
       - "alertmanager:/alertmanager"
-      - "{{ prometheus_configuration_directory }}/alertmanager.yml:/etc/alertmanager/config.yml:ro"
+      - "{{ prometheus_configuration_directory }}/alertmanager/alertmanager.yml:/etc/alertmanager/config.yml:ro"
       - "/etc/hosts:/etc/hosts:ro"
     ports:
       - "{{ prometheus_alertmanager_host }}:6783:6783"

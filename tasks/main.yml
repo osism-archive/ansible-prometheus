@@ -16,7 +16,7 @@
   become: true
   with_items:
     - "{{ prometheus_docker_compose_directory }}"
-    - "{{ prometheus_configuration_directory }}"
+    - "{{ prometheus_configuration_directory }}/alertmanager"
     - "{{ prometheus_configuration_directory }}/prometheus"
     - "{{ prometheus_configuration_directory }}/prometheus/targets"
     - "{{ prometheus_configuration_directory }}/prometheus/rules"
@@ -103,7 +103,7 @@
     mode: 0644
   with_items:
     - src: alertmanager.yml.j2
-      dest: "{{ prometheus_configuration_directory }}/alertmanager.yml"
+      dest: "{{ prometheus_configuration_directory }}/alertmanager/alertmanager.yml"
   notify: Reload alertmanager configuration
 
 - name: prometheus - nginx - create required directories
