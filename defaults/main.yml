@@ -17,6 +17,11 @@ operator_user: dragon
 operator_group: "{{ operator_user }}"
 
 ##########################
+# configuration
+
+configuration_directory: /opt/configuration
+
+##########################
 # prometheus
 
 prometheus_enable_alertmanager: false
@@ -128,12 +133,12 @@ prometheus_alertmanager_password: password
 ##########################
 # targets
 
-prometheus_custom_targets_directory: /opt/configuration/environments/monitoring/files/targets
+prometheus_custom_targets_directory: "{{ configuration_directory }}/environments/monitoring/files/targets"
 
 ##########################
 # rules
 
-prometheus_custom_rules_directory: /opt/configuration/environments/monitoring/files/rules
+prometheus_custom_rules_directory: "{{ configuration_directory }}/environments/monitoring/files/rules"
 
 prometheus_rules_scraper:
   timeframe: 10m
