@@ -19,6 +19,8 @@ operator_group: "{{ operator_user }}"
 ##########################
 # prometheus
 
+prometheus_enable_alertmanager: false
+
 prometheus_configuration_directory: /opt/prometheus/configuration
 prometheus_docker_compose_directory: /opt/prometheus
 

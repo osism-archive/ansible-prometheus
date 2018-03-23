@@ -4,6 +4,7 @@ global:
   scrape_timeout: {{ prometheus_scrape_timeout }}
   evaluation_interval: {{ prometheus_evaluation_interval }}
 
+{% if prometheus_enable_alertmanager|bool %}
 alerting:
   alertmanagers:
     - scheme: http
@@ -17,6 +18,7 @@ alerting:
 
 rule_files:
   - /etc/prometheus/rules/*.yml
+{% endif %}
 
 scrape_configs:
 

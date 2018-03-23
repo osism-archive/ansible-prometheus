@@ -2,6 +2,7 @@
 version: '2'
 services:
 
+{% if prometheus_enable_alertmanager|bool %}
   alertmanager:
     restart: unless-stopped
     image: "{{ prometheus_alertmanager_image }}"
@@ -12,6 +13,7 @@ services:
       - "/etc/hosts:/etc/hosts:ro"
     ports:
       - "{{ prometheus_alertmanager_host }}:6783:6783"
+{% endif %}
 
   prometheus:
     restart: unless-stopped
