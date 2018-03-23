@@ -61,11 +61,13 @@
   with_fileglob:
     - rules/*.yml
   notify: Reload prometheus configuration
+  when: prometheus_enable_alertmanager
 
 - name: prometheus - get status of {{ prometheus_custom_rules_directory }}
   stat:
     path: "{{ prometheus_custom_rules_directory }}"
   register: result
+  when: prometheus_enable_alertmanager
 
 - name: prometheus - copy additional static rule configuration files
   copy:
@@ -75,7 +77,9 @@
   with_fileglob:
     - "{{ prometheus_custom_rules_directory }}/*.yml"
   notify: Reload prometheus configuration
-  when: result.stat.exists == True
+  when:
+    - prometheus_enable_alertmanager
+    - result.stat.exists == True
 
 - name: prometheus - copy integrated dynamic rule configuration files
   template:
@@ -85,6 +89,7 @@
   with_fileglob:
     - templates/rules/*.yml.j2
   notify: Reload prometheus configuration
+  when: prometheus_enable_alertmanager
 
 - name: prometheus - copy additional dynamic rule configuration files
   template:
@@ -94,7 +99,9 @@
   with_fileglob:
     - "{{ prometheus_custom_rules_directory }}/*.yml.j2"
   notify: Reload prometheus configuration
-  when: result.stat.exists == True
+  when:
+    - result.stat.exists == True
+    - prometheus_enable_alertmanager
 
 - name: prometheus - alertmanager - copy configuration files
   template:
@@ -105,6 +112,7 @@
     - src: alertmanager.yml.j2
       dest: "{{ prometheus_configuration_directory }}/alertmanager/alertmanager.yml"
   notify: Reload alertmanager configuration
+  when: prometheus_enable_alertmanager
 
 - name: prometheus - nginx - create required directories
   file:
