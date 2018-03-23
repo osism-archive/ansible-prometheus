@@ -6,12 +6,12 @@ global:
 
 alerting:
   alertmanagers:
-  - scheme: http
-    static_configs:
-    - targets:
+    - scheme: http
+      static_configs:
+      - targets:
 {% for host in groups[prometheus_groupname] %}
 {% if hostvars[host]['prometheus_alertmanager_host'] is defined %}
-      - {{ hostvars[host]['prometheus_alertmanager_host'] }}:{{ prometheus_alertmanager_port }}
+        - {{ hostvars[host]['prometheus_alertmanager_host'] }}:{{ prometheus_alertmanager_port }}
 {% endif %}
 {% endfor %}
 

@@ -7,10 +7,10 @@ route:
   repeat_interval: 12h
   receiver: default
   routes:
-  - match:
-      alertname: DeadMansSwitch
-    repeat_interval: 5m
-    receiver: deadmansswitch
+    - match:
+        alertname: DeadMansSwitch
+      repeat_interval: 5m
+      receiver: deadmansswitch
 receivers:
-- name: default
-- name: deadmansswitch
+  - name: default
+  - name: deadmansswitch
