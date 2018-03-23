@@ -1,11 +1,4 @@
 ---
-- name: prometheus - install required packages
-  package:
-    name: "{{ item }}"
-    state: present
-  become: true
-  with_items: "{{ required_packages_prometheus }}"
-
 - name: prometheus - create required directories
   file:
     path: "{{ item }}"

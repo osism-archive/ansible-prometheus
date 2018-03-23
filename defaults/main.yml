@@ -1,11 +1,5 @@
 ---
 ##########################
-# packages
-
-required_packages_prometheus:
-  - python-docker
-
-##########################
 # docker
 
 docker_registry: index.docker.io
