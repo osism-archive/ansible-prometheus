@@ -22,7 +22,7 @@ operator_group: "{{ operator_user }}"
 prometheus_configuration_directory: /opt/prometheus/configuration
 prometheus_docker_compose_directory: /opt/prometheus
 
-prometheus_tag: v2.0.0
+prometheus_tag: latest
 prometheus_image: "{{ docker_registry }}/prom/prometheus:{{ prometheus_tag }}"
 
 prometheus_evaluation_interval: 1m
