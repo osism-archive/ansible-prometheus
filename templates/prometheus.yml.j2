@@ -22,6 +22,8 @@ rule_files:
 
 scrape_configs:
 
+{% include prometheus_custom_scrape_configs ignore missing %}
+
 {% if prometheus_scraper_prometheus|bool
    and groups[prometheus_scraper_prometheus_groupname] is defined
    and groups[prometheus_scraper_prometheus_groupname]|length %}
