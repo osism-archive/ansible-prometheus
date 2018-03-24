@@ -1,7 +1,9 @@
 ---
-{% if prometheus_scraper_elasticsearch | bool and groups[prometheus_scraper_elasticsearch_groupname] is defined%}
+{% if prometheus_scraper_elasticsearch | bool
+   and groups[prometheus_scraper_elasticsearch_groupname] is defined%}
 {% for host in groups[prometheus_scraper_elasticsearch_groupname] %}
-{% if hostvars[host]['prometheus_scraper_interface'] is defined and hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
+{% if hostvars[host]['prometheus_scraper_interface'] is defined
+   and hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']] is defined %}
 - targets:
   - {{ hostvars[host]['ansible_' + hostvars[host]['prometheus_scraper_interface']]['ipv4']['address'] }}:{{ prometheus_scraper_proxy_port }}
   labels:
