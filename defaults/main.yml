@@ -129,7 +129,7 @@ prometheus_alertmanager_password: password
 
 prometheus_custom_targets_directory: "{{ configuration_directory }}/environments/monitoring/files/targets"
 
-prometheus_custom_scrape_configs: []
+prometheus_custom_scrape_configs: "{{ configuration_directory }}/environments/monitoring/files/custom_scrape_configs.yml"
 
 ##########################
 # rules
