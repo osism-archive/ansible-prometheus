@@ -22,48 +22,79 @@ rule_files:
 
 scrape_configs:
 
+{% if prometheus_scraper_prometheus|bool
+   and groups[prometheus_scraper_prometheus_groupname] is defined
+   and groups[prometheus_scraper_prometheus_groupname]|length %}
   - job_name: prometheus
     metrics_path: "/metrics/prometheus"
     file_sd_configs:
       - files:
         - targets/prometheus.yml
+{% endif %}
 
+{% if prometheus_scraper_elasticsearch|bool
+   and groups[prometheus_scraper_elasticsearch_groupname] is defined
+   and groups[prometheus_scraper_elasticsearch_groupname]|length %}
   - job_name: elasticsearch
     metrics_path: "/metrics/elasticsearch"
     file_sd_configs:
       - files:
         - targets/elasticsearch.yml
+{% endif %}
 
+{% if prometheus_scraper_rabbitmq|bool
+   and groups[prometheus_scraper_rabbitmq_groupname] is defined
+   and groups[prometheus_scraper_rabbitmq_groupname]|length %}
   - job_name: rabbitmq
     metrics_path: "/metrics/rabbitmq"
     file_sd_configs:
       - files:
         - targets/rabbitmq.yml
+{% endif %}
 
+{% if prometheus_scraper_node|bool
+   and groups[prometheus_scraper_node_groupname] is defined
+   and groups[prometheus_scraper_node_groupname]|length %}
   - job_name: node
     metrics_path: "/metrics/node"
     file_sd_configs:
       - files:
         - targets/node.yml
+{% endif %}
 
+{% if prometheus_scraper_memcached|bool
+   and groups[prometheus_scraper_memcached_groupname] is defined
+   and groups[prometheus_scraper_memcached_groupname]|length %}
   - job_name: memcached
     metrics_path: "/metrics/memcached"
     file_sd_configs:
       - files:
         - targets/memcached.yml
+{% endif %}
 
+{% if prometheus_scraper_mariadb|bool
+   and groups[prometheus_scraper_mariadb_groupname] is defined
+   and groups[prometheus_scraper_mariadb_groupname]|length %}
   - job_name: mariadb
     metrics_path: "/metrics/mariadb"
     file_sd_configs:
       - files:
         - targets/mariadb.yml
+{% endif %}
 
+{% if prometheus_scraper_haproxy|bool
+   and groups[prometheus_scraper_haproxy_groupname] is defined
+   and groups[prometheus_scraper_haproxy_groupname]|length %}
   - job_name: haproxy
     metrics_path: "/metrics/haproxy"
     file_sd_configs:
       - files:
         - targets/haproxy.yml
+{% endif %}
 
+{% if prometheus_scraper_cadvisor|bool
+   and groups[prometheus_scraper_cadvisor_groupname] is defined
+   and groups[prometheus_scraper_cadvisor_groupname]|length %}
   - job_name: cadvisor
     metrics_path: "/metrics/cadvisor"
     file_sd_configs:
@@ -78,10 +109,15 @@ scrape_configs:
         regex: '.*:(.*)$'
         replacement: '$1'
         target_label: image_tag
+{% endif %}
 
+{% if prometheus_scraper_ceph|bool
+   and groups[prometheus_scraper_ceph_groupname] is defined
+   and groups[prometheus_scraper_ceph_groupname]|length %}
   - job_name: ceph 
     metrics_path: {{ prometheus_scraper_ceph_metrics_path }}
     honor_labels: true
     file_sd_configs:
       - files:
         - targets/ceph.yml
+{% endif %}
