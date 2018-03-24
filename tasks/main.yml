@@ -167,8 +167,17 @@
   register: result
   changed_when: ('Creating' in result.stdout or 'Recreating' in result.stdout)
 
-- name: prometheus - wait for service
+- name: prometheus - wait for service port
   wait_for:
     port: "{{ prometheus_port }}"
     host: "{{ prometheus_host }}"
-    delay: 10
+    delay: 3
+
+- name: prometheus - wait for service readiness
+  uri:
+    url: "http://{{ prometheus_host }}:{{ prometheus_port }}/-/ready"
+    return_content: yes
+  register: result
+  until: "'Prometheus is Ready.' in result.content"
+  retries: 5
+  delay: 3
