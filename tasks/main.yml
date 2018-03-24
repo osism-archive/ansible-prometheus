@@ -144,7 +144,7 @@
     owner: "{{ operator_user }}"
     group: "{{ operator_group }}"
     mode: 0640
-  notify: Restart service
+  notify: Restart nginx service
   with_items:
     - src: nginx.conf.j2
       dest: nginx/nginx.conf
