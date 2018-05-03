@@ -1,5 +1,5 @@
 ---
-- name: prometheus - create required directories
+- name: Create required directories
   file:
     path: "{{ item }}"
     state: directory
@@ -14,7 +14,7 @@
     - "{{ prometheus_configuration_directory }}/prometheus/targets"
     - "{{ prometheus_configuration_directory }}/prometheus/rules"
 
-- name: prometheus - copy configuration files
+- name: Copy configuration files
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -24,7 +24,7 @@
       dest: "{{ prometheus_configuration_directory }}/prometheus/prometheus.yml"
   notify: Reload prometheus configuration
 
-- name: prometheus - copy integrated dynamic target configuration files
+- name: Copy integrated dynamic target configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename|replace('.j2', '') }}"
@@ -32,12 +32,12 @@
   with_fileglob:
     - "templates/targets/*.yml.j2"
 
-- name: prometheus - get status of {{ prometheus_custom_targets_directory }}
+- name: Get status of {{ prometheus_custom_targets_directory }}
   stat:
     path: "{{ prometheus_custom_targets_directory }}"
   register: result
 
-- name: prometheus - copy additional dynamic target configuration files
+- name: Copy additional dynamic target configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/targets/{{ item|basename|replace('.j2', '') }}"
@@ -46,7 +46,7 @@
     - "{{ prometheus_custom_targets_directory }}/*.yml.j2"
   when: result.stat.exists == True
 
-- name: prometheus - copy integrated static rule configuration files
+- name: Copy integrated static rule configuration files
   copy:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
@@ -56,13 +56,13 @@
   notify: Reload prometheus configuration
   when: prometheus_enable_alertmanager
 
-- name: prometheus - get status of {{ prometheus_custom_rules_directory }}
+- name: Get status of {{ prometheus_custom_rules_directory }}
   stat:
     path: "{{ prometheus_custom_rules_directory }}"
   register: result
   when: prometheus_enable_alertmanager
 
-- name: prometheus - copy additional static rule configuration files
+- name: Copy additional static rule configuration files
   copy:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename }}"
@@ -74,7 +74,7 @@
     - prometheus_enable_alertmanager
     - result.stat.exists == True
 
-- name: prometheus - copy integrated dynamic rule configuration files
+- name: Copy integrated dynamic rule configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename|replace('.j2', '') }}"
@@ -84,7 +84,7 @@
   notify: Reload prometheus configuration
   when: prometheus_enable_alertmanager
 
-- name: prometheus - copy additional dynamic rule configuration files
+- name: Copy additional dynamic rule configuration files
   template:
     src: "{{ item }}"
     dest: "{{ prometheus_configuration_directory }}/prometheus/rules/{{ item|basename|replace('.j2', '') }}"
@@ -96,7 +96,7 @@
     - result.stat.exists == True
     - prometheus_enable_alertmanager
 
-- name: prometheus - alertmanager - copy configuration files
+- name: Alertmanager - copy configuration files
   template:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -107,7 +107,7 @@
   notify: Reload alertmanager configuration
   when: prometheus_enable_alertmanager
 
-- name: prometheus - nginx - create required directories
+- name: nginx - create required directories
   file:
     path: "{{ item }}"
     state: directory
@@ -118,7 +118,7 @@
   with_items:
     - "{{ prometheus_configuration_directory }}/nginx"
 
-- name: prometheus - nginx - install required packages
+- name: nginx - install required packages
   package:
     name: "{{ item }}"
     state: present
@@ -127,7 +127,7 @@
     - python-passlib
   when: prometheus_authentication
 
-- name: prometheus - nginx - prepare auth file
+- name: nginx - prepare auth file
   htpasswd:
     path: "{{ prometheus_configuration_directory }}/nginx/htpasswd.nginx"
     name: "{{ prometheus_username }}"
@@ -137,7 +137,7 @@
     mode: 0640
   when: prometheus_authentication
 
-- name: prometheus - nginx - copy configuration files
+- name: nginx - copy configuration files
   template:
     src: "{{ item.src }}"
     dest: "{{ prometheus_configuration_directory }}/{{ item.dest }}"
@@ -149,7 +149,7 @@
     - src: nginx.conf.j2
       dest: nginx/nginx.conf
 
-- name: prometheus - copy docker-compose.yml file
+- name: Copy docker-compose.yml file
   template:
     src: docker-compose.yml.j2
     dest: "{{ prometheus_docker_compose_directory }}/docker-compose.yml"
@@ -157,23 +157,23 @@
     group: "{{ operator_group }}"
     mode: 0640
 
-- name: prometheus - pull images
+- name: Pull images
   command: "docker-compose -f {{ prometheus_docker_compose_directory }}/docker-compose.yml pull"
   register: result
   changed_when: ('Downloaded' in result.stdout)
 
-- name: prometheus - run service
+- name: Run service
   command: "docker-compose -f {{ prometheus_docker_compose_directory }}/docker-compose.yml up -d --remove-orphans --no-build"
   register: result
   changed_when: ('Creating' in result.stdout or 'Recreating' in result.stdout)
 
-- name: prometheus - wait for service port
+- name: Wait for service port
   wait_for:
     port: "{{ prometheus_port }}"
     host: "{{ prometheus_host }}"
     delay: 3
 
-- name: prometheus - wait for service readiness
+- name: Wait for service readiness
   uri:
     url: "http://{{ prometheus_host }}:{{ prometheus_port }}/-/ready"
     return_content: yes
