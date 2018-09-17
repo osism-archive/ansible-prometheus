@@ -2,7 +2,6 @@
 
 [![Build Status](https://travis-ci.org/osism/ansible-prometheus.svg?branch=master)](https://travis-ci.org/osism/ansible-prometheus)
 [![Ansible Galaxy](https://img.shields.io/badge/Ansible%20Galaxy-osism.prometheus-blue.svg)](https://galaxy.ansible.com/osism/prometheus/)
-![Ansible 2.3](https://img.shields.io/badge/Ansible-2.3-green.png?style=flat)
 ![Ansible 2.4](https://img.shields.io/badge/Ansible-2.4-green.png?style=flat)
 ![Ansible 2.5](https://img.shields.io/badge/Ansible-2.5-green.png?style=flat)
 
