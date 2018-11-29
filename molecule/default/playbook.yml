@@ -4,6 +4,7 @@
   connection: paramiko
 
   vars:
+    docker_registry: registry-1.osism.io
     operator_user: ubuntu
     prometheus_groupname: all
 
