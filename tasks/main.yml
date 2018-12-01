@@ -171,7 +171,7 @@
   wait_for:
     port: "{{ prometheus_port }}"
     host: "{{ prometheus_host }}"
-    delay: 3
+    delay: 5
 
 - name: Wait for service readiness
   uri:
@@ -179,5 +179,5 @@
     return_content: yes
   register: result
   until: "'Prometheus is Ready.' in result.content"
-  retries: 5
-  delay: 3
+  retries: 10
+  delay: 5
