@@ -36,7 +36,9 @@ services:
       - "/etc/hosts:/etc/hosts:ro"
     ports:
       - "{{ prometheus_host }}:{{ prometheus_port }}:8080"
+{% if prometheus_enable_alertmanager|bool %}
       - "{{ prometheus_alertmanager_host }}:{{ prometheus_alertmanager_port }}:8081"
+{% endif %}
 
 volumes:
   prometheus:
