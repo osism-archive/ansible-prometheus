@@ -1,5 +1,5 @@
 ---
-version: '2'
+version: '3'
 services:
 
 {% if prometheus_enable_alertmanager|bool %}
@@ -13,6 +13,8 @@ services:
       - "/etc/hosts:/etc/hosts:ro"
     ports:
       - "{{ prometheus_alertmanager_host }}:6783:6783"
+    healthcheck:
+      test: wget -q -O -  http://localhost:6783/-/ready
 {% endif %}
 
   prometheus:
@@ -23,6 +25,8 @@ services:
       - "prometheus:/prometheus"
       - "{{ prometheus_configuration_directory }}/prometheus:/etc/prometheus:ro"
       - "/etc/hosts:/etc/hosts:ro"
+    healthcheck:
+      test: wget -q -O -  http://localhost:9090/-/ready
 
   nginx:
     restart: unless-stopped
