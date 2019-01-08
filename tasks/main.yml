@@ -36,6 +36,7 @@
   stat:
     path: "{{ prometheus_custom_targets_directory }}"
   register: result
+  delegate_to: localhost
 
 - name: Copy additional dynamic target configuration files
   template:
@@ -60,6 +61,7 @@
   stat:
     path: "{{ prometheus_custom_rules_directory }}"
   register: result
+  delegate_to: localhost
   when: prometheus_enable_alertmanager
 
 - name: Copy additional static rule configuration files
