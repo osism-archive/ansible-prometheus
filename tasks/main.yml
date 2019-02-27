@@ -14,6 +14,11 @@
     - "{{ prometheus_configuration_directory }}/prometheus/targets"
     - "{{ prometheus_configuration_directory }}/prometheus/rules"
 
+- name: Get status of {{ prometheus_custom_configuration_file }}
+  stat:
+    path: "{{ prometheus_custom_configuration_file }}"
+  register: result
+
 - name: Copy configuration files
   template:
     src: "{{ item.src }}"
@@ -22,6 +27,17 @@
   with_items:
     - src: prometheus.yml.j2
       dest: "{{ prometheus_configuration_directory }}/prometheus/prometheus.yml"
+  when: result.stat.exists == False
+  notify: Reload prometheus configuration
+
+- name: Copy custom configuration files
+  template:
+    src: "{{ item }}"
+    dest: "{{ prometheus_configuration_directory }}/prometheus/prometheus.yml"
+    mode: 0644
+  with_fileglob:
+    - "{{ prometheus_custom_configuration_file }}"
+  when: result.stat.exists == True
   notify: Reload prometheus configuration
 
 - name: Copy integrated dynamic target configuration files
