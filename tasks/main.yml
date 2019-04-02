@@ -45,7 +45,7 @@
     mode: 0644
   with_fileglob:
     - "{{ prometheus_custom_targets_directory }}/*.yml.j2"
-  when: result.stat.exists == True
+  when: result.stat.exists
 
 - name: Copy integrated static rule configuration files
   copy:
@@ -74,7 +74,7 @@
   notify: Reload prometheus configuration
   when:
     - prometheus_enable_alertmanager
-    - result.stat.exists == True
+    - result.stat.exists
 
 - name: Copy integrated dynamic rule configuration files
   template:
@@ -95,7 +95,7 @@
     - "{{ prometheus_custom_rules_directory }}/*.yml.j2"
   notify: Reload prometheus configuration
   when:
-    - result.stat.exists == True
+    - result.stat.exists
     - prometheus_enable_alertmanager
 
 - name: Alertmanager - copy configuration files
