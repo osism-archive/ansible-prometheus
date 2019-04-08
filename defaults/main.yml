@@ -3,6 +3,7 @@
 # docker
 
 docker_registry: index.docker.io
+prometheus_network: 172.31.102.0/28
 
 ##########################
 # operator user

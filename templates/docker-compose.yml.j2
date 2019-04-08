@@ -43,3 +43,11 @@ services:
 volumes:
   prometheus:
   alertmanager:
+
+networks:
+ default:
+   driver: bridge
+   ipam:
+     driver: default
+     config:
+       - subnet:  {{ prometheus_network }}
