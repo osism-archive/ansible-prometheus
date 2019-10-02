@@ -1,4 +1,4 @@
-molecule>=2.0
+molecule[openstack]>=2.0
 openstacksdk
 paramiko
 shade
