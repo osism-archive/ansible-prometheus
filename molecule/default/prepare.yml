@@ -3,6 +3,7 @@
   hosts: all
 
   vars:
+    docker_configure_repository: yes
     docker_user: ubuntu
 
   roles:
