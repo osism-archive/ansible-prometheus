@@ -1,3 +1,8 @@
+**This project is no longer maintained.**
+
+There is now a Prometheus integration in kolla-ansible. Therefore this role
+is no longer needed within OSISM and is no longer maintained.
+
 # Ansible osism.prometheus
 
 [![Build Status](https://travis-ci.org/osism/ansible-prometheus.svg?branch=master)](https://travis-ci.org/osism/ansible-prometheus)
